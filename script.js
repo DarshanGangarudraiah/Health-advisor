@@ -1,23 +1,24 @@
 document.getElementById('submit').addEventListener('click', function () {
     const name = document.getElementById('name').value;
+    const gender = document.querySelector('input[name="gender"]:checked').value;
     const age = document.getElementById('age').value;
     const sugarLevel = document.getElementById('sugarLevel').value;
     const bloodPressureSystolic = document.getElementById('bloodPressureSystolic').value;
     const bloodPressureDiastolic = document.getElementById('bloodPressureDiastolic').value;
 
-    if (!name || !age || !sugarLevel || !bloodPressureSystolic || !bloodPressureDiastolic ||
+    if (!name || !gender || !age || !sugarLevel || !bloodPressureSystolic || !bloodPressureDiastolic ||
         isNaN(age) || isNaN(sugarLevel) || isNaN(bloodPressureSystolic) || isNaN(bloodPressureDiastolic)) {
         alert('Please enter valid values.');
         return;
     }
 
-    const dietPlan = getDietPlan(age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic);
+    const dietPlan = getDietPlan(gender, age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic);
     const exercisePlan = getExercisePlan(age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic);
 
-    generatePDF(name, age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic, dietPlan, exercisePlan);
+    generatePDF(name, gender, age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic, dietPlan, exercisePlan);
 });
 
-function getDietPlan(age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic) {
+function getDietPlan(gender, age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic) {
     let diet = "Diet recommendations based on your inputs:\n\n";
 
     if (age < 18) {
@@ -37,6 +38,13 @@ function getDietPlan(age, sugarLevel, bloodPressureSystolic, bloodPressureDiasto
             diet += "Your blood pressure is low. Consider increasing salt intake moderately and ensure adequate hydration.\n\n";
         } else {
             diet += "Your blood pressure is normal. Maintain a balanced diet and monitor your health regularly.\n\n";
+        }
+
+        // Gender-specific dietary recommendations
+        if (gender === "Male") {
+            diet += "For males, consider including more lean proteins and healthy fats in your diet. Regularly consume fruits and vegetables to ensure a wide range of nutrients.\n\n";
+        } else if (gender === "Female") {
+            diet += "For females, ensure adequate calcium and iron intake. Include a variety of fruits, vegetables, and lean proteins in your diet.\n\n";
         }
     }
     return diet;
@@ -67,7 +75,7 @@ function getExercisePlan(age, sugarLevel, bloodPressureSystolic, bloodPressureDi
     return exercise;
 }
 
-function generatePDF(name, age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic, dietPlan, exercisePlan) {
+function generatePDF(name, gender, age, sugarLevel, bloodPressureSystolic, bloodPressureDiastolic, dietPlan, exercisePlan) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({
         format: 'a4',
@@ -81,12 +89,14 @@ function generatePDF(name, age, sugarLevel, bloodPressureSystolic, bloodPressure
 
     doc.setFontSize(16);
     doc.text("Personalized Health Plan", pageWidth / 2, y, { align: 'center' });
-    y += lineHeight + 2;
+    y += lineHeight + 10;
 
     doc.setFontSize(12);
     doc.text("Personal Details", margin, y);
     y += lineHeight;
     doc.text(`Name: ${name}`, margin, y);
+    y += lineHeight;
+    doc.text(`Gender: ${gender}`, margin, y);
     y += lineHeight;
     doc.text(`Age: ${age}`, margin, y);
     y += lineHeight;
