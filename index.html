@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIO PROJECT</title>
+    <title>Health Advisor</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>HEALTH ADVISOR</h1>
+    <h1>Welcome to Health Advisor</h1>
     <form id="healthForm">
-        Name:<input type="text" id="name"><br><br>
+        Name: <input type="text" id="name" name="name"><br><br>
+        Gender: 
+        <input type="radio" id="male" name="gender" value="Male">
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="Female">
+        <label for="female">Female</label><br><br>
         Age: <input type="text" id="age" name="age"><br><br>
         Sugar Level: <input type="text" id="sugarLevel" name="sugarLevel"><br><br>
         Blood Pressure: <br>
@@ -19,6 +24,7 @@
     </form>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
